@@ -392,9 +392,7 @@
 						"properties": {
                             "privateIpAddress": "10.0.1.5",
                             "privateIPAllocationMethod": "Static",
-							"publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Egress')]"
-                            },                            "primary": true,
+                            "primary": true,
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Untrust')]"
                             }
@@ -418,9 +416,6 @@
                         "properties": {
                             "privateIPAddress": "10.0.1.6",
                             "privateIPAllocationMethod": "Static",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Egress')]"
-                            },
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Untrust')]"
                             }
