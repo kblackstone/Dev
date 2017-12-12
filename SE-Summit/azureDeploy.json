@@ -499,6 +499,9 @@
                         "name": "Web1",
                         "properties": {
                             "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-Web1')]"
+                            },
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Webservers')]"
                             },
@@ -523,6 +526,9 @@
                         "name": "Dev1",
                         "properties": {
                             "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-Dev1')]"
+                            },
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Dev')]"
                             },
