@@ -560,20 +560,6 @@
             "resources": [],
             "dependsOn": []
         },
-        
-        {
-            "type": "Microsoft.Compute/availabilitySets",
-            "name": "AS-Dev",
-            "apiVersion": "2015-06-15",
-            "location": "[resourceGroup().location]",
-            "tags": {},
-            "properties": {
-                "platformUpdateDomainCount": 2,
-                "platformFaultDomainCount": 2
-            },
-            "resources": [],
-            "dependsOn": []
-        },
         {
             "apiVersion": "2015-06-15",
             "type": "Microsoft.Compute/virtualMachines",
@@ -786,14 +772,10 @@
         "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces/', 'INT-Dev1')]",
         "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW1')]",
-        "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW2')]",
-        "[resourceId('Microsoft.Compute/availabilitySets', 'AS-Dev')]"
+        "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW2')]"
       ],
       "properties": {
-          "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets', 'AS-Dev')]"
-                },
-                "hardwareProfile": {
+          "hardwareProfile": {
           "vmSize": "Standard_F1"
         },
         "osProfile": {
