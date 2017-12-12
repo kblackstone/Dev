@@ -13,7 +13,7 @@ This template deploys a firewall environment that includes:
 
 This template creates all the infrastructure and appropriate UDRs in the 10.0.0.0/16 VNET. Post-deployment tasks include:
 
-- Licensing the FW
+- Licensing the FW (Currently set for Bundle2, set to BYOL if you wish to use your own licensing)
 - Configuring the FW
 - Installation/configuration of the web server software
 
