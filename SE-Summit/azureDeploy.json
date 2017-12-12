@@ -496,9 +496,7 @@
             "name": "INT-Web1",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
-                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Web')]"
-            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"            ],
             "properties": {
                 "enableIPForwarding": false,
                 "ipConfigurations": [
@@ -509,12 +507,7 @@
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Webservers')]"
                             },
-                            "privateIpAddress": "10.0.4.50",
-                            "loadBalancerBackendAddressPools": [
-                                {
-                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Web'), '/backendAddressPools/AS-Web')]"
-                                }
-                            ]
+                            "privateIpAddress": "10.0.4.50"
                         }
                     }
                 ]
@@ -526,8 +519,7 @@
             "name": "INT-Dev1",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
-                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Dev')]"
+                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"
             ],
             "properties": {
                 "enableIPForwarding": false,
@@ -539,12 +531,7 @@
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Dev')]"
                             },
-                            "privateIpAddress": "10.0.6.50",
-                            "loadBalancerBackendAddressPools": [
-                                {
-                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Dev'), '/backendAddressPools/AS-Dev')]"
-                                }
-                            ]
+                            "privateIpAddress": "10.0.6.50"
                         }
                     }
                 ]
