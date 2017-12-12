@@ -6,7 +6,7 @@ This template deploys a firewall environment that includes:
 
 - Two Palo Alto Networks Firewalls
 - One Internal Load Balancer (LB-Web)
-- 1 Linux Web Server with apache webserver
+- 1 Linux Web Server
 - 1 Linux Dev Server
 - One Egress Load Balancer (LB-Egress)
 - Multiple Subnets and UDRs to support the traffic flow
@@ -15,7 +15,7 @@ This template creates all the infrastructure and appropriate UDRs in the 10.0.0.
 
 - Licensing the FW (Currently set for Bundle2, set to BYOL if you wish to use your own licensing)
 - Configuring the FW
-- Installation/configuration of the web server software
+- Installation/configuration of the Apache Web Server software
 
 To Deploy ARM Template using Azure CLI in ARM mode
 
