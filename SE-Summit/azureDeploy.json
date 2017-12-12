@@ -22,8 +22,8 @@
             "type": "String"
         },
         "Password": {
-            "defaultValue": "Paloalto123",
-            "type": "String"
+            "defaultValue": "Paloalto123!",
+            "type": "SecureString"
         }
     },
     "variables": {
@@ -175,10 +175,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Network/routeTables', 'RT-Web')]",
-                "[resourceId('Microsoft.Network/routeTables', 'RT-Test')]",
-                "[resourceId('Microsoft.Network/routeTables', 'RT-Dev')]",
-                "[resourceId('Microsoft.Network/routeTables', 'RT-QA')]"
-            ]
+                "[resourceId('Microsoft.Network/routeTables', 'RT-Dev')]"            ]
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
