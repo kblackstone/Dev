@@ -566,7 +566,7 @@
             "name": "VM-FW1",
             "location": "[resourceGroup().location]",
             "plan": {
-                "name": "byol",
+                "name": "bundle2",
                 "product": "vmseries1",
                 "publisher": "paloaltonetworks"
             },
@@ -586,7 +586,7 @@
                     "imageReference": {
                         "publisher": "paloaltonetworks",
                         "offer": "vmseries1",
-                        "sku": "byol",
+                        "sku": "bundle2",
                         "version": "8.0.0"
                     },
                     "osDisk": {
@@ -637,7 +637,7 @@
             "name": "VM-FW2",
             "location": "[resourceGroup().location]",
             "plan": {
-                "name": "byol",
+                "name": "bundle2",
                 "product": "vmseries1",
                 "publisher": "paloaltonetworks"
             },
@@ -657,7 +657,7 @@
                     "imageReference": {
                         "publisher": "paloaltonetworks",
                         "offer": "vmseries1",
-                        "sku": "byol",
+                        "sku": "bundle2",
                         "version": "8.0.0"
                     },
                     "osDisk": {
