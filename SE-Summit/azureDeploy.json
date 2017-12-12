@@ -709,9 +709,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces/', 'INT-Web1')]",
-        "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW1')]",
-        "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW2')]"
+        "[resourceId('Microsoft.Network/networkInterfaces/', 'INT-Web1')]"
       ],
       "properties": {
           "hardwareProfile": {
@@ -770,9 +768,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces/', 'INT-Dev1')]",
-        "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW1')]",
-        "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW2')]"
+        "[resourceId('Microsoft.Network/networkInterfaces/', 'INT-Dev1')]"
       ],
       "properties": {
           "hardwareProfile": {
