@@ -565,19 +565,7 @@
             "resources": [],
             "dependsOn": []
         },
-        {
-            "type": "Microsoft.Compute/availabilitySets",
-            "name": "AS-Web",
-            "apiVersion": "2015-06-15",
-            "location": "[resourceGroup().location]",
-            "tags": {},
-            "properties": {
-                "platformUpdateDomainCount": 2,
-                "platformFaultDomainCount": 2
-            },
-            "resources": [],
-            "dependsOn": []
-        },
+        
         {
             "type": "Microsoft.Compute/availabilitySets",
             "name": "AS-Dev",
@@ -742,14 +730,10 @@
         "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces/', 'INT-Web1')]",
         "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW1')]",
-        "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW2')]",
-        "[resourceId('Microsoft.Compute/availabilitySets', 'AS-Web')]"
+        "[resourceId('Microsoft.Compute/virtualMachines', 'VM-FW2')]"
       ],
       "properties": {
-          "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets', 'AS-Web')]"
-                },
-                "hardwareProfile": {
+          "hardwareProfile": {
           "vmSize": "Standard_F1"
         },
         "osProfile": {
