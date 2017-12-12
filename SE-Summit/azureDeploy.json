@@ -383,9 +383,7 @@
             "name": "INT-FW1-Untrust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
-                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Public')]"
-            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"            ],
             "properties": {
                 "enableIPForwarding": true,
                 "ipConfigurations": [
@@ -399,12 +397,7 @@
                             },                            "primary": true,
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Untrust')]"
-                            },
-                            "loadBalancerBackendAddressPools": [
-                                {
-                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/backendAddressPools/AS-FW')]"
-                                }
-                            ]
+                            }
                         }
                     }
                 ]
@@ -416,9 +409,7 @@
             "name": "INT-FW2-Untrust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
-                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Public')]"
-            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"            ],
             "properties": {
                 "enableIPForwarding": true,
                 "ipConfigurations": [
@@ -432,12 +423,7 @@
                             },
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Untrust')]"
-                            },
-                            "loadBalancerBackendAddressPools": [
-                                {
-                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/backendAddressPools/AS-FW')]"
-                                }
-                            ]
+                            }
                         }
                     }
                 ]
