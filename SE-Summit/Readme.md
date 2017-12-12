@@ -1,21 +1,21 @@
-# Azure-Multi-IP_DEMO
+# SE Summit - Load Balanced Outbound Traffic DEMO
 
-[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkblackstone%2FDev%2Fmaster%2FSE-Summit%2FazureDeploy.json)
+[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fptglynn%2FPaloAltoNetworks%2Fmaster%2FAzure-Multi-IP%2FazureDeploy.json)
 
-This template deploys a firewall sandwich environment that includes:
+This template deploys a firewall environment that includes:
 
-- One Public Load Balancer (LB-Public)
 - Two Palo Alto Networks Firewalls
 - One Internal Load Balancer (LB-Web)
-- Two Web Servers with apache webserver
+- 1 Linux Web Server
+- 1 Linux Dev Server
 - One Egress Load Balancer (LB-Egress)
 - Multiple Subnets and UDRs to support the traffic flow
 
 This template creates all the infrastructure and appropriate UDRs in the 10.0.0.0/16 VNET. Post-deployment tasks include:
 
-- Licensing the FW
+- Licensing the FW (Currently set for Bundle2, set to BYOL if you wish to use your own licensing)
 - Configuring the FW
-- Installation/configuration of the web server software
+- Installation/configuration of the Apache Web Server software
 
 To Deploy ARM Template using Azure CLI in ARM mode
 
