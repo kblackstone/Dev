@@ -14,7 +14,7 @@ This template deploys a firewall environment that includes:
 This template creates all the infrastructure and appropriate UDRs in the 10.0.0.0/16 VNET. Post-deployment tasks include:
 
 - Licensing the FW (Currently set for Bundle2, set to BYOL if you wish to use your own licensing)
-- Configuring the FW (select the fw-config file that matches your licensing)
+- Configuring the FW (select and import the fw-config file that matches your licensing)
 - Installation/configuration of the Apache Web Server software
 
 To Deploy ARM Template using Azure CLI in ARM mode
