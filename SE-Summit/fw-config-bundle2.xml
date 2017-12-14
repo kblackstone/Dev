@@ -593,7 +593,7 @@
                     <member>any</member>
                   </application>
                   <service>
-                    <member>any</member>
+                    <member>application-default</member>
                   </service>
                   <hip-profiles>
                     <member>any</member>
