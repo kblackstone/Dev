@@ -245,7 +245,7 @@
                         	"privateIPAddress": "10.0.3.100",
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'), '/subnets/Egress')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Egress')]"
                             }
                         }
                     }
