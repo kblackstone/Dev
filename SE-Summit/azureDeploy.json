@@ -29,6 +29,7 @@
     "variables": {
         "uniqueId": "[uniqueString(resourceGroup().id)]",
         "storageAccountName": "[concat('storage', variables('uniqueId'))]",
+	"vnet-name" : "[concat('NET-Demo', variables(('uniqueId'))]",
         "apiVersion": "2015-05-01-preview"
     },
     "resources": [
@@ -119,7 +120,7 @@
         {
             "apiVersion": "2016-06-01",
             "type": "Microsoft.Network/virtualNetworks",
-            "name": "NET-Demo",
+            "name": "[variables('vnet-name')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "addressSpace": {
@@ -244,7 +245,7 @@
                         	"privateIPAddress": "10.0.3.100",
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Egress')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'), '/subnets/Egress')]"
                             }
                         }
                     }
@@ -313,7 +314,7 @@
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]",
                 "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]"
             ]
         },
@@ -324,7 +325,7 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]",
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -336,7 +337,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Management')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Management')]"
                             },
                             "privateIpAddress": "10.0.0.5"
                         }
@@ -351,7 +352,7 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]",
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -363,7 +364,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Management')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Management')]"
                             },
                             "privateIpAddress": "10.0.0.6"
                         }
@@ -377,7 +378,7 @@
             "name": "INT-FW1-Untrust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]"            ],
             "properties": {
                 "enableIPForwarding": true,
                 "ipConfigurations": [
@@ -388,7 +389,7 @@
                             "privateIPAllocationMethod": "Static",
                             "primary": true,
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Untrust')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Untrust')]"
                             }
                         }
                     }
@@ -401,7 +402,7 @@
             "name": "INT-FW2-Untrust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]"            ],
             "properties": {
                 "enableIPForwarding": true,
                 "ipConfigurations": [
@@ -411,7 +412,7 @@
                             "privateIPAddress": "10.0.1.6",
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Untrust')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Untrust')]"
                             }
                         }
                     }
@@ -424,7 +425,7 @@
             "name": "INT-FW1-Trust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]",
                 "[resourceId('Microsoft.Network/loadBalancers', 'LB-Egress')]"
 
             ],
@@ -436,7 +437,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Trust')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Trust')]"
                             },
                             "privateIpAddress": "10.0.2.5",
                             "loadBalancerBackendAddressPools": [
@@ -455,7 +456,7 @@
             "name": "INT-FW2-Trust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]",
                 "[resourceId('Microsoft.Network/loadBalancers', 'LB-Egress')]"
             ],
             "properties": {
@@ -466,7 +467,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Trust')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Trust')]"
                             },
                             "privateIpAddress": "10.0.2.6",
                             "loadBalancerBackendAddressPools": [
@@ -485,7 +486,7 @@
             "name": "INT-Web1",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]"            ],
             "properties": {
                 "enableIPForwarding": false,
                 "ipConfigurations": [
@@ -497,7 +498,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-Web1')]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Webservers')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Webservers')]"
                             },
                             "privateIpAddress": "10.0.4.50"
                         }
@@ -511,7 +512,7 @@
             "name": "INT-Dev1",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]"
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]"
             ],
             "properties": {
                 "enableIPForwarding": false,
@@ -524,7 +525,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-Dev1')]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo'), '/subnets/Dev')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name')), '/subnets/Dev')]"
                             },
                             "privateIpAddress": "10.0.6.50"
                         }
@@ -622,7 +623,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]",
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]",
                 "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Management')]",
                 "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Untrust')]",
@@ -693,7 +694,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'NET-Demo')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet-name'))]",
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]",
                 "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Management')]",
                 "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Untrust')]",
