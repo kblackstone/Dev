@@ -29,7 +29,7 @@
     "variables": {
         "uniqueId": "[uniqueString(resourceGroup().id)]",
         "storageAccountName": "[concat('storage', variables('uniqueId'))]",
-	"vnet-name" : "[concat('NET-Demo', variables(('uniqueId'))]",
+	"vnet-name" : "[concat('NET-Demo', variables('uniqueId')]",
         "apiVersion": "2015-05-01-preview"
     },
     "resources": [
