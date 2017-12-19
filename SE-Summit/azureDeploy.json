@@ -19,6 +19,7 @@
         },
 		"vnetName": {
 		  "type": "string",
+		  "defaultValue": "Enter a VNET Name",
 		  "metadata": {
 			"description": "VNET name"
 			}
