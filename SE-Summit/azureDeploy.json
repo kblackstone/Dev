@@ -19,7 +19,6 @@
         },
 		"vnetName": {
 		  "type": "string",
-		  "defaultValue": "",
 		  "metadata": {
 			"description": "VNET name"
 			}
