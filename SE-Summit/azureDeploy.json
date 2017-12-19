@@ -19,9 +19,9 @@
         },
 		"vnetName": {
 		  "type": "string",
-		  "defaultValue": "NET-Demo",
+		  "defaultValue": "",
 		  "metadata": {
-			"description": "VNet name"
+			"description": "VNET name"
 			}
 		},
         "Username": {
