@@ -273,7 +273,7 @@
                             "enableFloatingIP": true,
                             "idleTimeoutInMinutes": 4,
                             "protocol": "Tcp",
-                            "loadDistribution": "Default",
+                            "loadDistribution": "sourceIP",
                             "backendAddressPool": {
                                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Egress'), '/backendAddressPools/AS-FW')]"
                             },
@@ -293,7 +293,7 @@
                             "enableFloatingIP": true,
                             "idleTimeoutInMinutes": 4,
                             "protocol": "Tcp",
-                            "loadDistribution": "Default",
+                            "loadDistribution": "sourceIP",
                             "backendAddressPool": {
                                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Egress'), '/backendAddressPools/AS-FW')]"
                             },
