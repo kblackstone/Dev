@@ -116,6 +116,7 @@
                   <enable>no</enable>
                 </lldp>
                 <dhcp-client/>
+                <interface-management-profile>ILB Health Check</interface-management-profile>
               </layer3>
             </entry>
           </ethernet>
@@ -128,6 +129,14 @@
               <action>wait-recover</action>
             </entry>
           </monitor-profile>
+          <interface-management-profile>
+            <entry name="ILB Health Check">
+              <permitted-ip>
+                <entry name="168.63.129.16"/>
+              </permitted-ip>
+              <ssh>yes</ssh>
+            </entry>
+          </interface-management-profile>
         </profiles>
         <ike>
           <crypto-profiles>
