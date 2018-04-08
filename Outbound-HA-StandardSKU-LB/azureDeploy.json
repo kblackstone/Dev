@@ -39,6 +39,32 @@
         "apiVersion": "2015-05-01-preview"
     },
     "resources": [
+      {
+      "apiVersion": "2017-03-01",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[parameters('frontEndNSGName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Allow_All"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "Port_Any",
+            "properties": {
+              "description": "Allow All for STD LB",
+              "protocol": "Any",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          }]
+          }
+        },
         {
             "type": "Microsoft.Network/routeTables",
             "name": "RT-Web",
@@ -138,19 +164,28 @@
                     {
                         "name": "Management",
                         "properties": {
-                            "addressPrefix": "10.0.0.0/24"
+                            "addressPrefix": "10.0.0.0/24",
+                            "networkSecurityGroup": {
+                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('frontEndNSGName'))]"
+                            }
                         }
                     },
                     {
                         "name": "Untrust",
                         "properties": {
-                            "addressPrefix": "10.0.1.0/24"
+                            "addressPrefix": "10.0.1.0/24",
+                            "networkSecurityGroup": {
+                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('frontEndNSGName'))]"
+                            }
                          }
                     },
                     {
                         "name": "Trust",
                         "properties": {
-                            "addressPrefix": "10.0.2.0/24"
+                            "addressPrefix": "10.0.2.0/24",
+                            "networkSecurityGroup": {
+                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('frontEndNSGName'))]"
+                            }
                         }
                     },
                     {
