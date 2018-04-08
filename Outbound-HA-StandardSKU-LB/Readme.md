@@ -12,7 +12,7 @@ This template deploys a firewall environment that includes:
 
 This template creates all the infrastructure and appropriate UDRs in the 10.0.0.0/16 VNET. Post-deployment tasks include:
 
-- Licensing the FW (Currently set for Bundle2, set to BYOL if you wish to use your own licensing)
+- Licensing the FW (Currently set for Bundle2. Change to BYOL if you wish to use your own licensing.)
 - Configuring the FW (select and import the fw-config file that matches your licensing)
 - Addition of a route back to your public IP address to the web and dev subnets (/32 route, next hop Internet) to allow linux vm log on
 - Installation/configuration of the Apache Web Server software
