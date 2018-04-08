@@ -25,10 +25,6 @@
             "defaultValue": null,
             "type": "SecureString"
             }
-          },
-        "frontEndNSGName": {
-          "defaultValue": "",
-          "type": "string"
-        }
+          }
     }
 }
