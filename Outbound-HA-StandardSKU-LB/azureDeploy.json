@@ -42,7 +42,7 @@
         {
             "type": "Microsoft.Network/routeTables",
             "name": "RT-Web",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "properties": {
                 "routes": [
@@ -84,7 +84,7 @@
         {
             "type": "Microsoft.Network/routeTables",
             "name": "RT-Dev",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "properties": {
                 "routes": [
@@ -187,7 +187,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "IP-FW1-Management",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "standard"
@@ -205,7 +205,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "IP-FW1-Untrust",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "standard"
@@ -223,7 +223,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "IP-FW2-Management",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "standard"
@@ -241,7 +241,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "IP-FW2-Untrust",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "standard"
@@ -259,7 +259,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "IP-Web1",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Static",
@@ -274,7 +274,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "IP-Dev1",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "Static",
@@ -748,7 +748,7 @@
             ]
         },
     {
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "VM-Web1",
       "location": "[resourceGroup().location]",
@@ -807,7 +807,7 @@
       }
     },
     {
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "VM-Dev1",
       "location": "[resourceGroup().location]",
