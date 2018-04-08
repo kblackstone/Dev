@@ -59,8 +59,8 @@
             {
               "name": "Port_Any",
               "properties": {
-              "description": "Allow All for STD LB",
-              "protocol": "Tcp",
+              "description": "",
+              "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",
               "sourceAddressPrefix": "*",
