@@ -24,7 +24,7 @@
 			"description": "VNET name"
 			}
 		},
-      "NSGName": {
+      "frontEndNSGName": {
         "type": "string",
         "defaultValue": "",
         "metadata": {
@@ -48,7 +48,7 @@
     "resources": [
       {
           "type": "Microsoft.Network/networkSecurityGroups",
-          "name": "[parameters('NSGName')]",
+          "name": "[parameters('frontEndNSGName')]",
           "apiVersion": "2017-03-01",
           "location": "[resourceGroup().location]",
           "tags": {
@@ -173,7 +173,7 @@
                         "properties": {
                             "addressPrefix": "10.0.0.0/24",
                             "networkSecurityGroup": {
-                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('NSGName'))]"
+                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('frontEndNSGName'))]"
                             }
                         }
                     },
@@ -182,7 +182,7 @@
                         "properties": {
                             "addressPrefix": "10.0.1.0/24",
                             "networkSecurityGroup": {
-                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('NSGName'))]"
+                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('frontEndNSGName'))]"
                             }
                          }
                     },
@@ -191,7 +191,7 @@
                         "properties": {
                             "addressPrefix": "10.0.2.0/24",
                             "networkSecurityGroup": {
-                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('NSGName'))]"
+                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('frontEndNSGName'))]"
                             }
                         }
                     },
