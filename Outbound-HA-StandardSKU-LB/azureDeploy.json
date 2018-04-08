@@ -40,18 +40,18 @@
     },
     "resources": [
       {
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[parameters('NSGName')]",
-      "apiVersion": "2017-03-01",
-      "location": "[resourceGroup().location]",
-      "tags": {
-        "displayName": "Allow_All"
-      },
-      "properties": {
-        "securityRules": [
-          {
-            "name": "Port_Any",
-            "properties": {
+          "type": "Microsoft.Network/networkSecurityGroups",
+          "name": "[parameters('NSGName')]",
+          "apiVersion": "2017-03-01",
+          "location": "[resourceGroup().location]",
+          "tags": {
+            "displayName": "Allow_All"
+          },
+          "properties": {
+            "securityRules": [
+            {
+              "name": "Port_Any",
+              "properties": {
               "description": "Allow All for STD LB",
               "protocol": "Any",
               "sourcePortRange": "*",
@@ -61,8 +61,8 @@
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
-            }
-          }]
+              }
+            }]
           }
         },
         {
