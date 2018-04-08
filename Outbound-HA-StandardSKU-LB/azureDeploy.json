@@ -24,7 +24,7 @@
 			"description": "VNET name"
 			}
 		},
-      "networkSecurityGroupName": {
+      "NSGName": {
         "type": "string",
         "defaultValue": "",
         "metadata": {
