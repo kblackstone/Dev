@@ -26,7 +26,7 @@
 		},
       "frontEndNSGName": {
         "type": "string",
-        "defaultValue": "",
+        "defaultValue": "Allow_All",
         "metadata": {
         "description": "Network Security Group Name"
     }
@@ -60,7 +60,7 @@
               "name": "Port_Any",
               "properties": {
               "description": "Allow All for STD LB",
-              "protocol": "Any",
+              "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",
               "sourceAddressPrefix": "*",
