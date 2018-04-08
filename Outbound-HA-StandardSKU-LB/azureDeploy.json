@@ -214,7 +214,7 @@
                 "publicIPAllocationMethod": "Static",
                 "idleTimeoutInMinutes": 4,
                 "dnsSettings": {
-                    "domainNameLabel": "[concat('fw1management', variables('uniqueId'))]"
+                    "domainNameLabel": "[concat('fw1untrust', variables('uniqueId'))]"
                 }
             },
             "resources": [],
@@ -250,7 +250,7 @@
                 "publicIPAllocationMethod": "Static",
                 "idleTimeoutInMinutes": 4,
                 "dnsSettings": {
-                    "domainNameLabel": "[concat('fw1management', variables('uniqueId'))]"
+                    "domainNameLabel": "[concat('fw2untrust', variables('uniqueId'))]"
                 }
             },
             "resources": [],
@@ -748,7 +748,7 @@
             ]
         },
     {
-      "apiVersion": "2017-08-01",
+      "apiVersion": "2017-12-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "VM-Web1",
       "location": "[resourceGroup().location]",
@@ -807,7 +807,7 @@
       }
     },
     {
-      "apiVersion": "2017-08-01",
+      "apiVersion": "2017-12-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "VM-Dev1",
       "location": "[resourceGroup().location]",
