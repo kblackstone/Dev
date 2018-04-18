@@ -27,9 +27,6 @@
              "description": "Select licensing model"
            }
         },
-
-
-
 		  "vnetName": {
 		    "type": "string",
 		    "defaultValue": "Enter a VNET Name",
