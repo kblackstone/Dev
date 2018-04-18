@@ -17,11 +17,24 @@
                 "description": "Azure VM size for VM-Series"
             }
         },
-		"vnetName": {
-		  "type": "string",
-		  "defaultValue": "Enter a VNET Name",
-		  "metadata": {
-			"description": "VNET name"
+        "licenseType": {
+           "type": "string",
+           "allowedValues": [
+               "bundle2",
+               "byol"
+           ],
+           "metadata": {
+             "description": "Select licensing model"
+           }
+        },
+
+
+
+		  "vnetName": {
+		    "type": "string",
+		    "defaultValue": "Enter a VNET Name",
+		    "metadata": {
+			  "description": "VNET name"
 			}
 		},
       "frontEndNSGName": {
@@ -653,7 +666,7 @@
             "name": "VM-FW1",
             "location": "[resourceGroup().location]",
             "plan": {
-                "name": "bundle2",
+                "name": "[parameters('licenseType')]",
                 "product": "vmseries1",
                 "publisher": "paloaltonetworks"
             },
@@ -673,7 +686,7 @@
                     "imageReference": {
                         "publisher": "paloaltonetworks",
                         "offer": "vmseries1",
-                        "sku": "bundle2",
+                        "sku": "[parameters('licenseType')]",
                         "version": "8.0.0"
                     },
                     "osDisk": {
@@ -724,7 +737,7 @@
             "name": "VM-FW2",
             "location": "[resourceGroup().location]",
             "plan": {
-                "name": "bundle2",
+                "name": "[parameters('licenseType')]",
                 "product": "vmseries1",
                 "publisher": "paloaltonetworks"
             },
@@ -744,7 +757,7 @@
                     "imageReference": {
                         "publisher": "paloaltonetworks",
                         "offer": "vmseries1",
-                        "sku": "bundle2",
+                        "sku": "[parameters('licenseType')]",
                         "version": "8.0.0"
                     },
                     "osDisk": {
