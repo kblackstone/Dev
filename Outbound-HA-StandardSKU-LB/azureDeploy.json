@@ -214,7 +214,7 @@
                             "addressPrefix": "10.0.4.0/24",
                             "routeTable": {
                                 "id": "[resourceId('Microsoft.Network/routeTables', 'RT-Web')]"
-								            },
+								            }
                         }
                     },
                     {
@@ -223,7 +223,7 @@
                             "addressPrefix": "10.0.6.0/24",
                             "routeTable": {
                                 "id": "[resourceId('Microsoft.Network/routeTables', 'RT-Dev')]"
-								            },
+								            }
                         }
                     },
                     {
