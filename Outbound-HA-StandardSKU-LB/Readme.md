@@ -2,7 +2,7 @@
 [<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkblackstone%2FDev%2Fmaster%2FOutbound-HA-StandardSKU-LB%2FazureDeploy.json)
 
 As part of the deployment options:
-- User MUST define a source IP address or subnet to allow management access. (0.0.0.0/0 is not allowed)
+- You MUST define a source IP address or subnet to allow management access. (0.0.0.0/0 is not allowed)
 
 This template deploys a firewall environment that includes:
 
