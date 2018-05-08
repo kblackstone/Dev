@@ -45,7 +45,7 @@
        },
        "defaultValue": "Standard_D3_v2"
     },
-    "standardSKU": {
+    "standardSKUPublicIPPublicIP": {
         "type": "string",
         "allowedValues": [
           "Yes",
@@ -230,7 +230,7 @@
   "resources": [
 
     {
-      "condition": "[equals(parameters('standardSKU'), 'No')]",
+      "condition": "[equals(parameters('standardSKUPublicIP'), 'No')]",
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
@@ -246,7 +246,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('standardSKU'), 'Yes')]",
+      "condition": "[equals(parameters('standardSKUPublicIP'), 'Yes')]",
       "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
