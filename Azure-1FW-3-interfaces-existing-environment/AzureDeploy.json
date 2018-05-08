@@ -228,7 +228,6 @@
     "storageAccountId": "[resourceId(parameters('storageAccountExistingRG'),'Microsoft.Storage/StorageAccounts',parameters('storageAccountName'))]"
   },
   "resources": [
-
     {
       "condition": "[equals(parameters('standardSKUPublicIP'), 'No')]",
       "apiVersion": "2015-06-15",
