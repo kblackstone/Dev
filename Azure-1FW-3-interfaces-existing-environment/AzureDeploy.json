@@ -45,16 +45,16 @@
        },
        "defaultValue": "Standard_D3_v2"
     },
-    "standardSKUPublicIP": {
+    "publicIPType": {
         "type": "string",
         "allowedValues": [
-          "Yes",
-          "No"
+          "standard",
+          "basic"
         ],
         "metadata": {
-          "description": "Will this VM be in the backend pool of a Standard SKU Load Balancer"
+          "description": "Use Standard if this VM will be in the backend pool of a Standard SKU Load Balancer"
         },
-        "defaultValue": "Yes"
+        "defaultValue": "standard"
     },
     "imageVersion": {
        "type": "string",
@@ -229,29 +229,12 @@
   },
   "resources": [
     {
-      "condition": "[equals(parameters('standardSKUPublicIP'), 'No')]",
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIPAddressName')]",
-      "location": "[resourceGroup().location]",
-      "sku": {
-          "name": "basic"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "dnsSettings": {
-          "domainNameLabel": "[parameters('publicIPAddressName')]"
-        }
-      }
-    },
-    {
-      "condition": "[equals(parameters('standardSKUPublicIP'), 'Yes')]",
       "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
       "sku": {
-          "name": "standard"
+          "name": "[parameters('publicIPType')]"
       },
       "properties": {
         "publicIPAllocationMethod": "Static",
