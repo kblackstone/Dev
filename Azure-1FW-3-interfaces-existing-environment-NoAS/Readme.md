@@ -1,6 +1,6 @@
 # Azure-Firewall-into-existing-environment
 
-[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkblackstone%2FDev%2Fmaster%2FAzure-1FW-3-interfaces-existing-environment-NoAS%2FAzureDeploy.json)
+[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkblackstone%2FPaloAltoNetworks%2Fmaster%2FAzure-1FW-3-interfaces-existing-environment-NoAS%2FAzureDeploy.json)
 
 This template was created to support the deployment of a 4 interface Palo Alto Networks firewall into an existing Microsoft Azure environment that has the following items already deployed:
 
@@ -25,14 +25,12 @@ The following Storage Account types are supported:
                     
 The following VMs are supported:
 
+                    -Standard_D3
+                    -Standard_D4
+                    -Standard_D3_v2
+                    -Standard_D4_v2
+                    -Standard_A4
                     -Standard_DS3_v2
-          			-Standard_DS4_v2
-         	 		-Standard_DS5_v2
-          			-Standard_D3_v2
-          			-Standard_D4_v2
-          			-Standard_D5_v2
-          			-Standard_GS1
-          			-Standard_F8s
-          			-Standard_F16s
+                    -Standard_DS4_v2
         
 NOTE: Make sure the VMs are supported in the specific Storage Account Type and Azure Region.

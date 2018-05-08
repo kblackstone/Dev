@@ -25,25 +25,36 @@
     "vmSize": {
        "type": "string",
        "allowedValues": [
-          "Standard_DS3_v2",
-          "Standard_DS4_v2",
-          "Standard_DS5_v2",
+          "Standard_D3",
+          "Standard_D4",
           "Standard_D3_v2",
           "Standard_D4_v2",
-          "Standard_D5_v2",
-          "Standard_GS1",
-          "Standard_F8s",
-          "Standard_F16s"
+          "Standard_A4",
+          "Standard_DS3_v2",
+          "Standard_DS4_v2"
        ],
        "metadata": {
           "description": "Azure VM size for VM-Series"
        },
-       "defaultValue": "Standard_DS3_v2"
+       "defaultValue": "Standard_D3_v2"
+    },
+    "publicIPType": {
+        "type": "string",
+        "allowedValues": [
+          "standard",
+          "basic"
+        ],
+        "metadata": {
+          "description": "Use Standard if this VM will be in the backend pool of a Standard SKU Load Balancer"
+        },
+        "defaultValue": "standard"
     },
     "imageVersion": {
        "type": "string",
        "allowedValues": [
           "7.1.1",
+          "8.0.0",
+          "8.1.0",
           "latest"
        ],
        "metadata": {
@@ -63,7 +74,7 @@
        },
        "defaultValue": "bundle2"
     },
-    "virtualNetworkName": { 
+    "virtualNetworkName": {
       "type": "string",
       "metadata": {
         "description": "Name of the EXISTING Virtual Network (VNET)"
@@ -172,7 +183,7 @@
       "metadata": {
         "description": "Name of existing Network Security Group for MGMT FW interface"
       }
-    }  
+    }
   },
   "variables": {
     "apiVersion": "2015-06-15",
@@ -209,14 +220,17 @@
     ],
     "storageAccountId": "[resourceId(parameters('storageAccountExistingRG'),'Microsoft.Storage/StorageAccounts',parameters('storageAccountName'))]"
   },
-  "resources": [         
+  "resources": [
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-08-01",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
+      "sku": {
+          "name": "[parameters('publicIPType')]"
+      },
       "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "publicIPAllocationMethod": "Static",
         "dnsSettings": {
           "domainNameLabel": "[parameters('publicIPAddressName')]"
         }
@@ -291,7 +305,7 @@
           }
         ]
       }
-    },    
+    },
     {
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Compute/virtualMachines",
@@ -351,6 +365,6 @@
                 }]
             }
         }
-    }    
+    }
   ]
 }
