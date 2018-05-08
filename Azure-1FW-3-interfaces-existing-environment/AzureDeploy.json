@@ -45,7 +45,7 @@
        },
        "defaultValue": "Standard_D3_v2"
     },
-    "standardSKUPublicIPPublicIP": {
+    "standardSKUPublicIP": {
         "type": "string",
         "allowedValues": [
           "Yes",
