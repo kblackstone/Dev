@@ -407,7 +407,7 @@
                             "enableFloatingIP": true,
                             "idleTimeoutInMinutes": 4,
                             "protocol": "Tcp",
-                            "loadDistribution": "Default",
+                            "loadDistribution": "clientIP",
                             "backendAddressPool": {
                                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/backendAddressPools/AS-FW')]"
                             },
