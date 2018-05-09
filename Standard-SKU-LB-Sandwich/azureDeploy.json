@@ -381,7 +381,7 @@
                     {
                         "name": "LB-Public-FrontEnd",
                         "properties": {
-                            "privateIPAllocationMethod": "Static",
+                            "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-ExternalLB')]"
                             }
