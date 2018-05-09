@@ -434,6 +434,7 @@
             },
             "resources": [],
             "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-ExternalLB')]",
                 "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]"
             ]
