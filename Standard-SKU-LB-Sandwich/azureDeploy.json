@@ -324,6 +324,24 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
+            "name": "IP-ExternalLB",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[concat('extlb1', variables('uniqueId'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
             "name": "IP-Web1",
             "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
@@ -347,21 +365,6 @@
                 "idleTimeoutInMinutes": 4,
                 "dnsSettings": {
                     "domainNameLabel": "[concat('dev1', variables('uniqueId'))]"
-                }
-            },
-            "resources": [],
-            "dependsOn": []
-        },
-        {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "IP-ExternalLB",
-            "apiVersion": "2017-08-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "publicIPAllocationMethod": "Static",
-                "idleTimeoutInMinutes": 4,
-                "dnsSettings": {
-                    "domainNameLabel": "[concat('extlb1', variables('uniqueId'))]"
                 }
             },
             "resources": [],
