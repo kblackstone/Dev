@@ -598,7 +598,8 @@
             "name": "INT-FW1-Untrust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Public')]"            ],
             "properties": {
                 "enableIPForwarding": true,
                 "ipConfigurations": [
@@ -630,7 +631,8 @@
             "name": "INT-FW2-Untrust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Public')]"            ],
             "properties": {
                 "enableIPForwarding": true,
                 "ipConfigurations": [
