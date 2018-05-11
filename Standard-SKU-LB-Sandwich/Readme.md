@@ -11,7 +11,9 @@ This template deploys a firewall environment that includes:
 - Network Security Group and related subnet associations to allow Standard SKU Load Balancer functionality
 - Multiple Subnets and UDRs to support the traffic flow
 
-This template creates all the infrastructure and appropriate UDRs in the 10.0.0.0/16 VNET. Post-deployment tasks include:
+This template creates all the infrastructure and appropriate UDRs in the 10.0.0.0/16 VNET.
+
+Post-deployment tasks include:
 
 - Licensing the FW (if you selected the byol license type)
 - Configuring the FW (download, import, and commit the fw-config file that matches your licensing)
