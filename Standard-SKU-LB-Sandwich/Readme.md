@@ -18,7 +18,7 @@ Post-deployment tasks include:
 - Licensing the FW (if you selected the byol license type)
 - Configuring the FW (download, import, and commit the fw-config file that matches your licensing)
 - Update the Inbound HTTP NAT rule destination address with the Public IP of the External Load Balancer
-- Installation/configuration of the Apache Web Server software (sudo apt-get update; sudo apt-get install apache2 -y)
+- Installation/configuration of the Apache Web Server software on the Web Server (sudo apt-get update; sudo apt-get install apache2 -y)
 
 To Deploy ARM Template using Azure CLI in ARM mode
 
