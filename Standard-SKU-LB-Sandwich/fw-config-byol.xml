@@ -98,6 +98,7 @@
                   <enable>no</enable>
                 </lldp>
                 <dhcp-client/>
+                <interface-management-profile>ILB Health Check</interface-management-profile>
               </layer3>
             </entry>
             <entry name="ethernet1/2">
@@ -275,7 +276,7 @@
           </profile>
         </qos>
         <virtual-router>
-          <entry name="default">
+          <entry name="vr-untrust">
             <protocol>
               <bgp>
                 <enable>no</enable>
@@ -298,7 +299,6 @@
             </protocol>
             <interface>
               <member>ethernet1/1</member>
-              <member>ethernet1/2</member>
             </interface>
             <ecmp>
               <algorithm>
@@ -348,6 +348,67 @@
                   </entry>
                   <entry name="VNET CIDR">
                     <nexthop>
+                      <next-vr>vr-trust</next-vr>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <interface>ethernet1/1</interface>
+                    <metric>10</metric>
+                    <destination>10.0.0.0/16</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                </static-route>
+              </ip>
+            </routing-table>
+          </entry>
+          <entry name="vr-trust">
+            <ecmp>
+              <algorithm>
+                <ip-modulo/>
+              </algorithm>
+            </ecmp>
+            <protocol>
+              <bgp>
+                <routing-options>
+                  <graceful-restart>
+                    <enable>yes</enable>
+                  </graceful-restart>
+                </routing-options>
+                <enable>no</enable>
+              </bgp>
+            </protocol>
+            <routing-table>
+              <ip>
+                <static-route>
+                  <entry name="Internet Default">
+                    <nexthop>
+                      <next-vr>vr-untrust</next-vr>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>0.0.0.0/0</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                  <entry name="Health Probe">
+                    <nexthop>
                       <ip-address>10.0.2.1</ip-address>
                     </nexthop>
                     <bfd>
@@ -360,12 +421,31 @@
                     </path-monitor>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>10.0.0.0/16</destination>
+                    <destination>168.63.129.16/32</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
                   </entry>
-                  <entry name="Health Probe">
+                  <entry name="Untrust Subnet">
+                    <path-monitor>
+                      <enable>no</enable>
+                      <failure-condition>any</failure-condition>
+                      <hold-time>2</hold-time>
+                    </path-monitor>
+                    <nexthop>
+                      <next-vr>vr-untrust</next-vr>
+                    </nexthop>
+                    <bfd>
+                      <profile>None</profile>
+                    </bfd>
+                    <interface>ethernet1/2</interface>
+                    <metric>10</metric>
+                    <destination>10.0.1.0/24</destination>
+                    <route-table>
+                      <unicast/>
+                    </route-table>
+                  </entry>
+                  <entry name="VNET CIDR">
                     <path-monitor>
                       <enable>no</enable>
                       <failure-condition>any</failure-condition>
@@ -379,7 +459,7 @@
                     </bfd>
                     <interface>ethernet1/2</interface>
                     <metric>10</metric>
-                    <destination>168.63.129.16/32</destination>
+                    <destination>10.0.0.0/16</destination>
                     <route-table>
                       <unicast/>
                     </route-table>
@@ -387,6 +467,9 @@
                 </static-route>
               </ip>
             </routing-table>
+            <interface>
+              <member>ethernet1/2</member>
+            </interface>
           </entry>
         </virtual-router>
       </network>
@@ -517,6 +600,31 @@
                   </destination>
                   <service>any</service>
                 </entry>
+                <entry name="Inbound HTTP">
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <interface-address>
+                        <interface>ethernet1/2</interface>
+                      </interface-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <to>
+                    <member>untrust</member>
+                  </to>
+                  <from>
+                    <member>untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>20.36.219.116</member>
+                  </destination>
+                  <destination-translation>
+                    <translated-address>10.0.4.50</translated-address>
+                  </destination-translation>
+                  <service>service-http</service>
+                </entry>
               </rules>
             </nat>
             <default-security-rules>
@@ -560,23 +668,67 @@
                   </hip-profiles>
                   <action>allow</action>
                 </entry>
+                <entry name="Untrust Health Probe">
+                  <to>
+                    <member>any</member>
+                  </to>
+                  <from>
+                    <member>untrust</member>
+                  </from>
+                  <source>
+                    <member>168.63.129.16</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>ssh</member>
+                  </application>
+                  <service>
+                    <member>tcp-22</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                </entry>
+                <entry name="Inbound HTTP">
+                  <to>
+                    <member>trust</member>
+                  </to>
+                  <from>
+                    <member>untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>web-browsing</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                </entry>
                 <entry name="Outbound Access">
-                  <profile-setting>
-                    <profiles>
-                      <url-filtering>
-                        <member>default</member>
-                      </url-filtering>
-                      <virus>
-                        <member>default</member>
-                      </virus>
-                      <spyware>
-                        <member>strict</member>
-                      </spyware>
-                      <vulnerability>
-                        <member>strict</member>
-                      </vulnerability>
-                    </profiles>
-                  </profile-setting>
                   <to>
                     <member>untrust</member>
                   </to>

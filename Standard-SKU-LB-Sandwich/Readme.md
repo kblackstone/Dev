@@ -1,5 +1,5 @@
 
-[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkblackstone%2FDev%2Fmaster%2FStandard-SKU-LB-Sandwich%2FazureDeploy.json)
+[<img src="http://azuredeploy.net/deploybutton.png"/>](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkblackstone%2FDev%2Fmaster%2FOutbound-HA-StandardSKU-LB%2FazureDeploy.json)
 
 This template deploys a firewall environment that includes:
 
@@ -13,9 +13,9 @@ This template deploys a firewall environment that includes:
 This template creates all the infrastructure and appropriate UDRs in the 10.0.0.0/16 VNET. Post-deployment tasks include:
 
 - Licensing the FW (if you selected the byol license type)
-- Configuring the FW (download and import the fw-config file that matches your licensing)
-- Addition of a route back to your public IP address to the web and dev subnets (/32 route, next hop Internet) to allow linux vm log on
-- Installation/configuration of the Apache Web Server software
+- Configuring the FW (download, import, and commit the fw-config file that matches your licensing)
+- Update the Inbound HTTP NAT rule destination address with the Public IP of the External Load Balancer
+- Installation/configuration of the Apache Web Server software (sudo apt-get update; sudo apt-get install apache2 -y)
 
 To Deploy ARM Template using Azure CLI in ARM mode
 
