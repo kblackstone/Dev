@@ -622,7 +622,10 @@
                         }
                     }
                 ]
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Untrust')]",
+            ]
         },
         {
             "apiVersion": "2015-06-15",
@@ -653,7 +656,10 @@
                         }
                     }
                 ]
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Untrust')]",
+            ]
         },
         {
             "apiVersion": "2015-06-15",
