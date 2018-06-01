@@ -281,6 +281,24 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
+            "name": "IP-PublicLB",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[concat('extlb1', variables('uniqueId'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
             "name": "IP-FW1-Management",
             "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
@@ -346,25 +364,6 @@
                 "idleTimeoutInMinutes": 4,
                 "dnsSettings": {
                     "domainNameLabel": "[concat('fw2untrust', variables('uniqueId'))]"
-                }
-            },
-            "resources": [],
-            "dependsOn": []
-        },
-        {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "IP-PublicLB",
-            "apiVersion": "2017-08-01",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "standard"
-            },
-            "properties": {
-                "publicIPAllocationMethod": "Static",
-                "idleTimeoutInMinutes": 4,
-                "publicIpAddressVersion": "IPv4",
-                "dnsSettings": {
-                    "domainNameLabel": "[concat('publiclb1', variables('uniqueId'))]"
                 }
             },
             "resources": [],
