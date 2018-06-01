@@ -353,7 +353,7 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "IP-ExternalLB",
+            "name": "IP-PublicLB",
             "apiVersion": "2017-08-01",
             "location": "[resourceGroup().location]",
             "sku": {
@@ -363,7 +363,7 @@
                 "publicIPAllocationMethod": "Static",
                 "idleTimeoutInMinutes": 4,
                 "dnsSettings": {
-                    "domainNameLabel": "[concat('extlb1', variables('uniqueId'))]"
+                    "domainNameLabel": "[concat('publiclb1', variables('uniqueId'))]"
                 }
             },
             "resources": [],
