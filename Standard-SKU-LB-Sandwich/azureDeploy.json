@@ -313,7 +313,9 @@
                 }
             },
             "resources": [],
-            "dependsOn": []
+            "dependsOn": [
+              "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-PublicLB')]"
+            ]
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
