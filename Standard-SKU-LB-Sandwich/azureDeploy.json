@@ -362,6 +362,7 @@
             "properties": {
                 "publicIPAllocationMethod": "Static",
                 "idleTimeoutInMinutes": 4,
+                "publicIpAddressVersion": "IPv4",
                 "dnsSettings": {
                     "domainNameLabel": "[concat('publiclb1', variables('uniqueId'))]"
                 }
