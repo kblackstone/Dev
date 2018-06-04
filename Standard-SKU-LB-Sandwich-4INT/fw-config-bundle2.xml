@@ -120,6 +120,23 @@
                 <interface-management-profile>ILB Health Check</interface-management-profile>
               </layer3>
             </entry>
+            <entry name="ethernet1/3">
+              <layer3>
+                <ipv6>
+                  <neighbor-discovery>
+                    <router-advertisement>
+                      <enable>no</enable>
+                    </router-advertisement>
+                  </neighbor-discovery>
+                </ipv6>
+                <ndp-proxy>
+                  <enabled>no</enabled>
+                </ndp-proxy>
+                <lldp>
+                  <enable>no</enable>
+                </lldp>
+              </layer3>
+            </entry>
           </ethernet>
         </interface>
         <profiles>
@@ -563,6 +580,13 @@
                 </layer3>
               </network>
             </entry>
+            <entry name="dmz">
+              <network>
+                <layer3>
+                  <member>ethernet1/3</member>
+                </layer3>
+              </network>
+            </entry>
           </zone>
           <service>
             <entry name="tcp-22">
@@ -801,6 +825,7 @@
               <interface>
                 <member>ethernet1/1</member>
                 <member>ethernet1/2</member>
+                <member>ethernet1/3</member>
               </interface>
             </network>
           </import>
