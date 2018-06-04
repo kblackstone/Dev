@@ -3,7 +3,7 @@
 
 This template deploys a firewall environment that includes:
 
-- Two Palo Alto Networks Firewalls
+- Two Palo Alto Networks Firewalls (3 interfaces per firewall)
 - One Standard SKU External Load Balancer (LB-Public)
 - One Standard SKU Internal Load Balancer (LB-Egress)
 - 1 Linux Web Server
