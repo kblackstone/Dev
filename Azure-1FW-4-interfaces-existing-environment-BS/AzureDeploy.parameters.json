@@ -189,8 +189,8 @@
       }
     },
     "customDataField": {
-      "type": "string"
-    }
+        "value": "[variables('customDataField')]"
+    },
 
   }
-}  
+}

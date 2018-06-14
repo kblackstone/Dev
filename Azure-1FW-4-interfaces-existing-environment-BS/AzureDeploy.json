@@ -120,9 +120,6 @@
 					"description": "The subdirectory hosting the bootstrap files. Only required if hosting multiple bootstrap directories on the same share"
 				}
 		},
-    "customDataField": {
-        "value": "[variables('customDataField')]"
-    },
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
