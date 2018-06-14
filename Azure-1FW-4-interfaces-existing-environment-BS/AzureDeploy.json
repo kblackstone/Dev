@@ -120,6 +120,9 @@
 					"description": "The subdirectory hosting the bootstrap files. Only required if hosting multiple bootstrap directories on the same share"
 				}
 		},
+    "customDataField": {
+        "value": "[variables('customDataField')]"
+    },
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
@@ -429,7 +432,7 @@
                 "computerName": "[parameters('vmName')]",
                 "adminUsername": "[parameters('adminUsername')]",
                 "adminPassword": "[parameters('adminPassword')]",
-                "customData": "[base64(variables('customDataField'))]"
+                "customData": "[base64(parameters('customDataField'))]"
             },
             "storageProfile": {
                 "imageReference": {
