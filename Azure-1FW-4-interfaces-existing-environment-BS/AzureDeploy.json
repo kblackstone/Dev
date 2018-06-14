@@ -92,13 +92,34 @@
        },
        "defaultValue": "no"
     },
-    "bootstrapUri": {
-       "type": "string",
-       "metadata": {
-          "description": "Enter the bootstrap folder name"
-       },
-       "defaultValue": "Bootstrap Bucket"
-    },
+    "BootstrapStorageAccount": {
+			"defaultValue": "",
+			"type": "String",
+			"metadata": {
+					"description": "Storage account hosting the bootstrap files"
+				}
+		},
+		"StorageAccountAccessKey": {
+			"defaultValue": "",
+			"type": "String",
+			"metadata": {
+					"description": "Authentication key to access the storage account"
+				}
+		},
+		"StorageAccountFileShare": {
+			"defaultValue": "",
+			"type": "String",
+			"metadata": {
+					"description": "The file share in the storage account where the bootstrap files are located"
+				}
+		},
+		"StorageAccountFileShareDirectory": {
+			"defaultValue": "",
+			"type": "String",
+			"metadata": {
+					"description": "The subdirectory hosting the bootstrap files. Only required if hosting multiple bootstrap directories on the same share"
+				}
+		},
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
@@ -242,6 +263,7 @@
     "subnet2Ref": "[concat(variables('vnetID'),'/subnets/',parameters('subnet2Name'))]",
     "subnet3Ref": "[concat(variables('vnetID'),'/subnets/',parameters('subnet3Name'))]",
     "publicIPAddressType": "Dynamic",
+    "customDataField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('StorageAccountFileShareDirectory'))]",
     "subnets": [
       {
         "name": "[parameters('subnet0Name')]",
@@ -406,7 +428,8 @@
             "osProfile": {
                 "computerName": "[parameters('vmName')]",
                 "adminUsername": "[parameters('adminUsername')]",
-                "adminPassword": "[parameters('adminPassword')]"
+                "adminPassword": "[parameters('adminPassword')]",
+                "customData": "[base64(parameters('customDataField'))]"
             },
             "storageProfile": {
                 "imageReference": {
@@ -415,15 +438,6 @@
                     "sku": "[parameters('imageSku')]",
                     "version": "[parameters('imageVersion')]"
                 },
-                "dataDisks": [{
-					          "name": "datadisk1",
-					          "lun": 0,
-					          "vhd": {
-						            "uri": "[parameters('bootstrapUri')]"
-					          },
-					          "caching": "ReadOnly",
-					          "createOption": "Attach"
-				        }],
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
