@@ -429,7 +429,7 @@
                 "computerName": "[parameters('vmName')]",
                 "adminUsername": "[parameters('adminUsername')]",
                 "adminPassword": "[parameters('adminPassword')]",
-                "customData": "[base64(parameters('customDataField'))]"
+                "customData": "[base64(variables('customDataField'))]"
             },
             "storageProfile": {
                 "imageReference": {
