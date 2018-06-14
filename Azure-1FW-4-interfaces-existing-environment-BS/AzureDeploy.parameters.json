@@ -1,7 +1,7 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01-preview/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {    
+    "parameters": {
     "vmName": {
        "type": "string",
        "metadata": {
@@ -45,7 +45,7 @@
        },
        "defaultValue": "Standard_D3_v2"
     },
-    "virtualNetworkName": { 
+    "virtualNetworkName": {
       "type": "string",
       "metadata": {
         "description": "Name of the Virtual Network (VNET)"
@@ -187,7 +187,10 @@
       "metadata": {
         "description": "Name of existing Network Security Group for MGMT FW interface"
       }
+    },
+    "customDataField": {
+      "type": "string"
     }
-        
+
   }
 }  

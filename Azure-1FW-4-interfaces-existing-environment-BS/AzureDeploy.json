@@ -250,9 +250,6 @@
       "metadata": {
         "description": "Name of existing Network Security Group for MGMT FW interface"
       }
-    },
-    "customDataField": {
-      "type": "string"
     }
   },
   "variables": {
