@@ -415,26 +415,23 @@
                     "sku": "[parameters('imageSku')]",
                     "version": "[parameters('imageVersion')]"
                 },
-                
-                "condition": "[equals(parameters('bootstrapFW'), 'yes')]",
-                    "dataDisks": [{
-					           "name": "datadisk1",
-					           "lun": 0,
-					           "vhd": {
-						                 "uri": "[parameters('bootstrapUri')]"
-					           },
-					           "caching": "ReadOnly",
-					           "createOption": "Attach"
-				             }],
-
+                "dataDisks": [{
+					          "name": "datadisk1",
+					          "lun": 0,
+					          "vhd": {
+						            "uri": "[parameters('bootstrapUri')]"
+					          },
+					          "caching": "ReadOnly",
+					          "createOption": "Attach"
+				        }],
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/', parameters('vmName'), '-', variables('imageOffer'), '-', parameters('imageSku'), '.vhd')]"
-                    },
-                    "caching": "ReadWrite",
-                    "createOption": "FromImage"
-                }
+                       "uri": "[concat('http://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/', parameters('vmName'), '-', variables('imageOffer'), '-', parameters('imageSku'), '.vhd')]"
+                     },
+                     "caching": "ReadWrite",
+                     "createOption": "FromImage"
+                   }
             },
             "networkProfile": {
                 "networkInterfaces": [{
