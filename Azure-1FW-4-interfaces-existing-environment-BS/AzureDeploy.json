@@ -418,6 +418,10 @@
            "product": "[variables('imageOffer')]",
            "publisher": "[variables('imagePublisher')]"
         },
+        "parameters": {
+          "customDataField": {
+              "value": "[variables('customDataField')]"
+        },
         "properties": {
           "availabilitySet": {
                     "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('fwAvSet'))]"
