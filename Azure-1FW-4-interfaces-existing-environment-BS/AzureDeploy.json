@@ -419,11 +419,6 @@
            "publisher": "[variables('imagePublisher')]"
         },
         "properties": {
-          "parameters": {
-            "customDataField": {
-                "value": "[variables('customDataField')]"
-                }
-          },
           "availabilitySet": {
                     "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('fwAvSet'))]"
                 },
@@ -434,7 +429,7 @@
                 "computerName": "[parameters('vmName')]",
                 "adminUsername": "[parameters('adminUsername')]",
                 "adminPassword": "[parameters('adminPassword')]",
-                "customData": "[base64(parameters('customDataField'))]"
+                "customData": "[base64(variables('customDataField'))]"
             },
             "storageProfile": {
                 "imageReference": {
