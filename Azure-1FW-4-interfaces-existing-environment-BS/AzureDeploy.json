@@ -422,8 +422,8 @@
           "parameters": {
             "customDataField": {
                 "value": "[variables('customDataField')]"
+                }
           },
-        },
           "availabilitySet": {
                     "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('fwAvSet'))]"
                 },
