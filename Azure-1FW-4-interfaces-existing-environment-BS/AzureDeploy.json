@@ -403,7 +403,6 @@
       }
     },
     {
-        "condition": "[equals(parameters('bootstrapFirewall'), 'yes')]",
         "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Compute/virtualMachines",
         "name": "[parameters('vmName')]",
@@ -430,7 +429,7 @@
                 "computerName": "[parameters('vmName')]",
                 "adminUsername": "[parameters('adminUsername')]",
                 "adminPassword": "[parameters('adminPassword')]",
-                "customData": "[base64(variables('customDataField'))]"
+                "customData": "[if(equals(parameters('bootstrapFirewall'), 'yes'), [base64(variables('customDataField'))])]"
             },
             "storageProfile": {
                 "imageReference": {
@@ -473,75 +472,5 @@
             }
         }
     },
-    {
-        "condition": "[equals(parameters('bootstrapFirewall'), 'no')]",
-        "apiVersion": "[variables('apiVersion')]",
-        "type": "Microsoft.Compute/virtualMachines",
-        "name": "[parameters('vmName')]",
-        "location": "[resourceGroup().location]",
-        "dependsOn": [
-         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '0')]",
-         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '1')]",
-         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '2')]",
-         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '3')]"
-      ],
-        "plan": {
-           "name": "[parameters('imageSku')]",
-           "product": "[variables('imageOffer')]",
-           "publisher": "[variables('imagePublisher')]"
-        },
-        "properties": {
-          "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('fwAvSet'))]"
-                },
-            "hardwareProfile": {
-                "vmSize": "[parameters('vmSize')]"
-            },
-            "osProfile": {
-                "computerName": "[parameters('vmName')]",
-                "adminUsername": "[parameters('adminUsername')]",
-                "adminPassword": "[parameters('adminPassword')]"
-            },
-            "storageProfile": {
-                "imageReference": {
-                    "publisher": "[variables('imagePublisher')]",
-                    "offer": "[variables('imageOffer')]",
-                    "sku": "[parameters('imageSku')]",
-                    "version": "[parameters('imageVersion')]"
-                },
-                "osDisk": {
-                    "name": "osdisk",
-                    "vhd": {
-                       "uri": "[concat('http://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/', parameters('vmName'), '-', variables('imageOffer'), '-', parameters('imageSku'), '.vhd')]"
-                     },
-                     "caching": "ReadWrite",
-                     "createOption": "FromImage"
-                   }
-            },
-            "networkProfile": {
-                "networkInterfaces": [{
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),'0'))]",
-                    "properties": {
-                        "primary": true
-                    }
-                }, {
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),'1'))]",
-                    "properties": {
-                        "primary": false
-                    }
-                }, {
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),'2'))]",
-                    "properties": {
-                        "primary": false
-                    }
-                }, {
-                    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'),'3'))]",
-                    "properties": {
-                        "primary": false
-                    }
-                }]
-            }
-        }
-    }
   ]
 }
