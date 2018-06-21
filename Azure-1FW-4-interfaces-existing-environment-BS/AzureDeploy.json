@@ -429,7 +429,8 @@
                 "computerName": "[parameters('vmName')]",
                 "adminUsername": "[parameters('adminUsername')]",
                 "adminPassword": "[parameters('adminPassword')]",
-                "customData": "[if(equals(parameters('bootstrapFirewall'), 'yes'), [base64(variables('customDataField'))])]"
+                "customData": "[if(equals(parameters('bootstrapFirewall'), 'yes'), [base64(variables('customDataField'))], json('null'))]"
+
             },
             "storageProfile": {
                 "imageReference": {
