@@ -476,6 +476,7 @@
     {
         "condition": "[equals(parameters('bootstrapFirewall'), 'no')]",
         "apiVersion": "[variables('apiVersion')]",
+        "type": "Microsoft.Compute/virtualMachines",
         "location": "[resourceGroup().location]",
         "dependsOn": [
          "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '0')]",
