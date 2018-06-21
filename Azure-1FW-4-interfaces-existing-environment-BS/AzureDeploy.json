@@ -406,7 +406,7 @@
         "apiVersion": "[variables('apiVersion')]",
         "condition": "[equals(parameters('bootstrapFirewall'),'yes')]",
         "type": "Microsoft.Compute/virtualMachines",
-        "name": "[concat(variables('vmName'),'-bs')]",
+        "name": "[concat(parameters('vmName'),'-bs')]",
         "location": "[resourceGroup().location]",
         "dependsOn": [
          "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), '0')]",
