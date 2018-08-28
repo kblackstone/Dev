@@ -1,0 +1,877 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+ 		"NetworkSecurityGroupInboundIP": {
+			"type": "string",
+			"metadata": {
+				"description": "Your source public IP address. Added to the inbound NSG for Management subnet to restrict access to the deployment."
+			},
+			"defaultValue": "1.1.1.1/32"
+		},
+        "Username": {
+            "defaultValue": "paloalto",
+            "type": "String"
+        },
+        "Password": {
+            "defaultValue": "Paloalto123!",
+            "type": "SecureString"
+        }
+    },
+    "variables": {
+        "uniqueId": "[uniqueString(resourceGroup().id)]",
+        "storageAccountName": "[concat('storage', variables('uniqueId'))]",
+        "apiVersion": "2015-05-01-preview"
+    },
+    "resources": [
+      {
+          "type": "Microsoft.Network/networkSecurityGroups",
+          "name": "Mgmt-Access",
+          "apiVersion": "2017-03-01",
+          "location": "[resourceGroup().location]",
+          "tags": {
+            "displayName": "Mgmt-Access"
+          },
+          "properties": {
+            "securityRules": [
+            {
+              "name": "Port_Any",
+              "properties": {
+              "description": "",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+			        "sourceAddressPrefix": "[parameters('NetworkSecurityGroupInboundIP')]",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+              }
+            }]
+          }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "LB-Access",
+            "apiVersion": "2017-03-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+              "displayName": "LB-Access"
+            },
+            "properties": {
+              "securityRules": [
+              {
+                "name": "Port_Any",
+                "properties": {
+                "description": "",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+  			        "sourceAddressPrefix": "0.0.0.0/0",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 100,
+                "direction": "Inbound"
+                }
+              }]
+            }
+          },
+        {
+            "type": "Microsoft.Network/routeTables",
+            "name": "RT-Dev",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "Devroute-Network",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/16",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.0.3.100"
+                        }
+                    },
+                    {
+                        "name": "Devroute-Local",
+                        "properties": {
+                            "addressPrefix": "10.0.6.0/24",
+                            "nextHopType": "VnetLocal"
+                        }
+                    },
+                    {
+                        "name": "Devroute-Default",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "10.0.3.100"
+                        }
+                    },
+                    {
+                        "name": "Mgmt-Access",
+                        "properties": {
+                            "addressPrefix": "[parameters('NetworkSecurityGroupInboundIP')]",
+                            "nextHopType": "Internet"
+                        }
+                    },
+                    {
+                        "name": "Devroute-Trust",
+                        "properties": {
+                            "addressPrefix": "10.0.2.0/24",
+                            "nextHopType": "VnetLocal"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "apiVersion": "2016-06-01",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "vnet-Traps",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                   {
+                        "name": "Management",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24",
+                            "networkSecurityGroup": {
+                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'Mgmt-Access')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Dev",
+                        "properties": {
+                            "addressPrefix": "10.0.6.0/24",
+                            "routeTable": {
+                                "id": "[resourceId('Microsoft.Network/routeTables', 'RT-Dev')]"
+								            }
+                        }
+                    },
+                    {
+                        "name": "Untrust",
+                        "properties": {
+                            "addressPrefix": "10.0.1.0/24",
+                            "networkSecurityGroup": {
+                              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'LB-Access')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "Trust",
+                        "properties": {
+                            "addressPrefix": "10.0.2.0/24"
+                         }
+                    },
+                    {
+                        "name": "Egress",
+                        "properties": {
+                            "addressPrefix": "10.0.3.0/24"
+                         }
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/routeTables', 'RT-Dev')]"            ]
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "IP-PublicLB",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[concat('extlb1', variables('uniqueId'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "IP-FW1-Management",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[concat('fw1management', variables('uniqueId'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+              "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-PublicLB')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "IP-FW1-Untrust",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[concat('fw1untrust', variables('uniqueId'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "IP-FW2-Management",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[concat('fw2management', variables('uniqueId'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "IP-FW2-Untrust",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[concat('fw2untrust', variables('uniqueId'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "IP-Dev1",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[concat('dev1', variables('uniqueId'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "name": "LB-Public",
+            "apiVersion": "2017-08-01",
+            "sku":
+            {
+              "name": "Standard"
+            },
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LB-Public-FrontEnd",
+                        "properties": {
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-PublicLB')]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "AS-FW"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "LB-Public-HTTP",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/frontendIPConfigurations/Lb-Public-FrontEnd')]"
+                            },
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "enableFloatingIP": true,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "sourceIP",
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/backendAddressPools/AS-FW')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/probes/TCP-22')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "TCP-22",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 22,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [],
+                "outboundNatRules": [],
+                "inboundNatPools": []
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]",
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-PublicLB')]",
+                "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "name": "LB-Egress",
+            "apiVersion": "2017-08-01",
+            "sku":
+            {
+              "name": "Standard"
+            },
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LB-Egress-FrontEnd",
+                        "properties": {
+                        	"privateIPAddress": "10.0.3.100",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps'), '/subnets/Egress')]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "AS-FW"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "LB-Egress-All",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Egress'), '/frontendIPConfigurations/LB-Egress-FrontEnd')]"
+                            },
+                            "frontendPort": 0,
+                            "backendPort": 0,
+                            "enableFloatingIP": true,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "All",
+                            "loadDistribution": "sourceIP",
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Egress'), '/backendAddressPools/AS-FW')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Egress'), '/probes/TCP-22')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "TCP-22",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 22,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [],
+                "outboundNatRules": [],
+                "inboundNatPools": []
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+                "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]"
+            ]
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "INT-FW1-Management",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "FW1-Management",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps'), '/subnets/Management')]"
+                            },
+                            "privateIpAddress": "10.0.0.5"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "INT-FW2-Management",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "FW2-Management",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps'), '/subnets/Management')]"
+                            },
+                            "privateIpAddress": "10.0.0.6"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "INT-FW1-Untrust",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]",
+                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Public')]"            ],
+            "properties": {
+                "enableIPForwarding": true,
+                "ipConfigurations": [
+                	{
+						"name": "FW1-Untrust",
+						"properties": {
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Untrust')]"
+                            },
+                            "privateIpAddress": "10.0.1.5",
+                            "privateIPAllocationMethod": "Static",
+                            "primary": true,
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps'), '/subnets/Untrust')]"
+                            },
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/backendAddressPools/AS-FW')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "INT-FW2-Untrust",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]",
+                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Public')]"            ],
+            "properties": {
+                "enableIPForwarding": true,
+                "ipConfigurations": [
+                    {
+                        "name": "FW2-Untrust",
+                        "properties": {
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Untrust')]"
+                            },
+                            "privateIPAddress": "10.0.1.6",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps'), '/subnets/Untrust')]"
+                            },
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/backendAddressPools/AS-FW')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "INT-FW1-Trust",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]",
+                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Egress')]"
+
+            ],
+            "properties": {
+                "enableIPForwarding": true,
+                "ipConfigurations": [
+                    {
+                        "name": "FW1-Trust",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps'), '/subnets/Trust')]"
+                            },
+                            "privateIpAddress": "10.0.2.5",
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Egress'), '/backendAddressPools/AS-FW')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "INT-FW2-Trust",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]",
+                "[resourceId('Microsoft.Network/loadBalancers', 'LB-Egress')]"
+            ],
+            "properties": {
+                "enableIPForwarding": true,
+                "ipConfigurations": [
+                    {
+                        "name": "FW2-Trust",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps'), '/subnets/Trust')]"
+                            },
+                            "privateIpAddress": "10.0.2.6",
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Egress'), '/backendAddressPools/AS-FW')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "INT-Dev1",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]"
+            ],
+            "properties": {
+                "enableIPForwarding": false,
+                "ipConfigurations": [
+                    {
+                        "name": "Dev1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-Dev1')]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps'), '/subnets/Dev')]"
+                            },
+                            "privateIpAddress": "10.0.6.50"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[variables('storageAccountName')]",
+            "apiVersion": "2016-01-01",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Compute/availabilitySets",
+            "name": "AS-FW",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {
+                "platformUpdateDomainCount": 2,
+                "platformFaultDomainCount": 2
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "VM-FW1",
+            "location": "[resourceGroup().location]",
+            "plan": {
+                "name": "bundle2",
+                "product": "vmseries1",
+                "publisher": "paloaltonetworks"
+            },
+            "properties": {
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_D3_v2"
+                },
+                "osProfile": {
+                    "computerName": "VM-FW1",
+          "adminUsername": "[parameters('Username')]",
+          "adminPassword": "[parameters('Password')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "paloaltonetworks",
+                        "offer": "vmseries1",
+                        "sku": "bundle2",
+                        "version": "8.1.0"
+                    },
+                    "osDisk": {
+                        "name": "osdisk",
+                        "vhd": {
+                            "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/VM-FW1.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Management')]",
+                            "properties": {
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Untrust')]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Trust')]",
+                            "properties": {
+                                "primary": false
+                            }
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]",
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]",
+                "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Management')]",
+                "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Untrust')]",
+                "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Trust')]",
+                "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ]
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "VM-FW2",
+            "location": "[resourceGroup().location]",
+            "plan": {
+                "name": "bundle2",
+                "product": "vmseries1",
+                "publisher": "paloaltonetworks"
+            },
+            "properties": {
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "Standard_D3_v2"
+                },
+                "osProfile": {
+                    "computerName": "VM-FW2",
+          "adminUsername": "[parameters('Username')]",
+          "adminPassword": "[parameters('Password')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "paloaltonetworks",
+                        "offer": "vmseries1",
+                        "sku": "bundle2",
+                        "version": "8.1.0"
+                    },
+                    "osDisk": {
+                        "name": "osdisk",
+                        "vhd": {
+                            "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/VM-FW2.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Management')]",
+                            "properties": {
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Untrust')]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Trust')]",
+                            "properties": {
+                                "primary": false
+                            }
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-Traps')]",
+                "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]",
+                "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Management')]",
+                "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Untrust')]",
+                "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Trust')]",
+                "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ]
+        },
+    {
+      "apiVersion": "2017-12-01",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "VM-Dev1",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces/', 'INT-Dev1')]"
+      ],
+      "properties": {
+          "hardwareProfile": {
+          "vmSize": "Standard_F1"
+        },
+        "osProfile": {
+          "computerName": "VM-Dev1",
+          "adminUsername": "[parameters('Username')]",
+          "adminPassword": "[parameters('Password')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "16.04.0-LTS",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/VM-Dev1-OS.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
+            {
+              "name": "datadisk",
+              "diskSizeGB": "10",
+              "lun": 0,
+              "vhd": {
+                "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/VM-Dev1-Data.vhd')]"
+              },
+              "createOption": "Empty"
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'INT-Dev1')]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "false"
+          }
+        }
+      }
+    }
+    ],
+    "outputs": {
+        "firewall 1 management": {
+            "type": "String",
+            "value": "[reference('IP-FW1-Management').dnsSettings.fqdn]"
+        },
+        "firewall 2 management": {
+            "type": "String",
+            "value": "[reference('IP-FW2-Management').dnsSettings.fqdn]"
+        }
+    }
+}
