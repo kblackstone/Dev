@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
  		"NetworkSecurityGroupInboundIP": {
-			"type": "string",
+			"type": "string",'vnet-Traps'
 			"metadata": {
 				"description": "Your source public IP address. Added to the inbound NSG for Management subnet to restrict access to the deployment."
 			},
@@ -689,7 +689,7 @@
                         "publisher": "paloaltonetworks",
                         "offer": "vmseries1",
                         "sku": "bundle2",
-                        "version": "8.1.0"
+                        "version": "latest"
                     },
                     "osDisk": {
                         "name": "osdisk",
@@ -760,7 +760,7 @@
                         "publisher": "paloaltonetworks",
                         "offer": "vmseries1",
                         "sku": "bundle2",
-                        "version": "8.1.0"
+                        "version": "latest"
                     },
                     "osDisk": {
                         "name": "osdisk",
