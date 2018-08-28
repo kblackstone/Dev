@@ -2,6 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+    	"vnetName": {
+		  "type": "string",
+		  "defaultValue": "Enter a VNET Name",
+		  "metadata": {
+			"description": "VNET name"
+			}
+		},
  		"NetworkSecurityGroupInboundIP": {
 			"type": "string",
 			"metadata": {
@@ -128,7 +135,7 @@
         {
             "apiVersion": "2016-06-01",
             "type": "Microsoft.Network/virtualNetworks",
-            "name": "vnet-traps",
+            "name": "[parameters('vnetName')]",
             "location": "[resourceGroup().location]",
             "properties": {
                 "addressSpace": {
@@ -352,7 +359,7 @@
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-PublicLB')]",
                 "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]"
             ]
@@ -374,7 +381,7 @@
                         	"privateIPAddress": "10.0.3.100",
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps'), '/subnets/Egress')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Egress')]"
                             }
                         }
                     }
@@ -423,7 +430,7 @@
             },
             "resources": [],
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Compute/availabilitySets', 'AS-FW')]"
             ]
         },
@@ -446,7 +453,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps'), '/subnets/Management')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Management')]"
                             },
                             "privateIpAddress": "10.0.0.5"
                         }
@@ -461,7 +468,7 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]",
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -473,7 +480,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps'), '/subnets/Management')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Management')]"
                             },
                             "privateIpAddress": "10.0.0.6"
                         }
@@ -487,7 +494,7 @@
             "name": "INT-FW1-Untrust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/loadBalancers', 'LB-Public')]"            ],
             "properties": {
                 "enableIPForwarding": true,
@@ -502,7 +509,7 @@
                             "privateIPAllocationMethod": "Static",
                             "primary": true,
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps'), '/subnets/Untrust')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Untrust')]"
                             },
                             "loadBalancerBackendAddressPools": [
                                 {
@@ -520,7 +527,7 @@
             "name": "INT-FW2-Untrust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/loadBalancers', 'LB-Public')]"            ],
             "properties": {
                 "enableIPForwarding": true,
@@ -534,7 +541,7 @@
                             "privateIPAddress": "10.0.1.6",
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps'), '/subnets/Untrust')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Untrust')]"
                             },
                             "loadBalancerBackendAddressPools": [
                                 {
@@ -564,7 +571,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps'), '/subnets/Trust')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Trust')]"
                             },
                             "privateIpAddress": "10.0.2.5",
                             "loadBalancerBackendAddressPools": [
@@ -583,7 +590,7 @@
             "name": "INT-FW2-Trust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/loadBalancers', 'LB-Egress')]"
             ],
             "properties": {
@@ -594,7 +601,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Static",
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps'), '/subnets/Trust')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Trust')]"
                             },
                             "privateIpAddress": "10.0.2.6",
                             "loadBalancerBackendAddressPools": [
@@ -613,7 +620,7 @@
             "name": "INT-Dev1",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
             ],
             "properties": {
                 "enableIPForwarding": false,
@@ -626,7 +633,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-Dev1')]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps'), '/subnets/Dev')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Dev')]"
                             },
                             "privateIpAddress": "10.0.6.50"
                         }
@@ -724,7 +731,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]",
                 "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Management')]",
                 "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW1-Untrust')]",
@@ -795,7 +802,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW2-Management')]",
                 "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Management')]",
                 "[resourceId('Microsoft.Network/networkInterfaces', 'INT-FW2-Untrust')]",
