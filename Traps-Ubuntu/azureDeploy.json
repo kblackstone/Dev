@@ -815,7 +815,7 @@
       ],
       "properties": {
           "hardwareProfile": {
-          "vmSize": "Standard_D3_v2"
+          "vmSize": "Standard_F1"
         },
         "osProfile": {
           "computerName": "VM-Dev1",
@@ -824,9 +824,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftVisualStudio",
-            "offer": "Windows",
-            "sku": "Win7-SP1-Ent-N-x64",
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "16.04.0-LTS",
             "version": "latest"
           },
           "osDisk": {
@@ -840,7 +840,7 @@
           "dataDisks": [
             {
               "name": "datadisk",
-              "diskSizeGB": "1023",
+              "diskSizeGB": "10",
               "lun": 0,
               "vhd": {
                 "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/VM-Dev1-Data.vhd')]"
