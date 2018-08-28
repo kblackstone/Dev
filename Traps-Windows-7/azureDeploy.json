@@ -827,7 +827,7 @@
             "publisher": "MicrosoftVisualStudio",
             "offer": "Windows",
             "sku": "Win7-SP1-Ent-N-x64",
-            "version": "latest"
+            "version": "2018.08.20"
           },
           "osDisk": {
             "name": "osdisk",
