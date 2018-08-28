@@ -834,7 +834,7 @@
             "publisher": "MicrosoftWindowsDesktop",
             "offer": "Windows",
             "sku": "rs4-pro",
-            "version": "latest"
+            "version": "17134.228.55"
           },
           "osDisk": {
             "name": "osdisk",
