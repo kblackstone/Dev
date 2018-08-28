@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
  		"NetworkSecurityGroupInboundIP": {
-			"type": "string",'vnet-traps'
+			"type": "string",
 			"metadata": {
 				"description": "Your source public IP address. Added to the inbound NSG for Management subnet to restrict access to the deployment."
 			},
