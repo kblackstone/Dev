@@ -707,7 +707,7 @@
             "name": "INT-Web1",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"            ],
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"            ],
             "properties": {
                 "enableIPForwarding": false,
                 "ipConfigurations": [
@@ -719,7 +719,7 @@
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-Web1')]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName')), '/subnets/Webservers')]"
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')), '/subnets/Webservers')]"
                             },
                             "privateIpAddress": "10.0.4.50"
                         }
