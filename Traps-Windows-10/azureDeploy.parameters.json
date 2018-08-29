@@ -24,10 +24,6 @@
             "Password": {
             "defaultValue": null,
             "type": "SecureString"
-            },
-            "vnetName": {
-            "defaultValue": null,
-            "type": "String"
             }
           }
     }
