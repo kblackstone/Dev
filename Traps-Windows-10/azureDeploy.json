@@ -832,7 +832,7 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "MicrosoftWindowsDesktop",
-            "offer": "Windows",
+            "offer": "Windows-10",
             "sku": "rs4-pro",
             "version": "17134.228.55"
           },
