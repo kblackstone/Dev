@@ -157,13 +157,6 @@
                         }
                     },
                     {
-                        "name": "Mgmt-Access",
-                        "properties": {
-                            "addressPrefix": "[parameters('NetworkSecurityGroupInboundIP')]",
-                            "nextHopType": "Internet"
-                        }
-                    },
-                    {
                         "name": "Devroute-Trust",
                         "properties": {
                             "addressPrefix": "10.0.2.0/24",
@@ -342,21 +335,6 @@
                 "idleTimeoutInMinutes": 4,
                 "dnsSettings": {
                     "domainNameLabel": "[concat('web1', variables('uniqueId'))]"
-                }
-            },
-            "resources": [],
-            "dependsOn": []
-        },
-        {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "IP-Dev1",
-            "apiVersion": "2017-08-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "publicIPAllocationMethod": "Static",
-                "idleTimeoutInMinutes": 4,
-                "dnsSettings": {
-                    "domainNameLabel": "[concat('dev1', variables('uniqueId'))]"
                 }
             },
             "resources": [],
@@ -742,9 +720,6 @@
                         "name": "Dev1",
                         "properties": {
                             "privateIPAllocationMethod": "Static",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-Dev1')]"
-                            },
                             "subnet": {
                                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')), '/subnets/Dev')]"
                             },
