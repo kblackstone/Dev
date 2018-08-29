@@ -441,7 +441,7 @@
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', 'IP-FW1-Management')]",
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -559,7 +559,7 @@
             "name": "INT-FW1-Trust",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', 'vnet-traps')]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
                 "[resourceId('Microsoft.Network/loadBalancers', 'LB-Egress')]"
 
             ],
