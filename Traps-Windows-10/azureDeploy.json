@@ -23,6 +23,11 @@
         "storageAccountName": "[concat('storage', variables('uniqueId'))]",
         "apiVersion": "2015-05-01-preview",
         "vnetName": "vnet-traps",
+        "BootstrapStorageAccount": "kbbootstrap",
+        "StorageAccountAccessKey": "8qLC19F9z5hppsR1Acu1jcjf8/6rkAB+I5yTGBzu2RpiCRLfoqlnQGszEQJMaoi3mA7fSCZFwQiPwWNc0ZoSTA==",
+        "StorageAccountFileShare": "bootstrapfiles",
+        "StorageAccountFileShareDirectory": "",
+        "customDataField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('StorageAccountFileShareDirectory'))]",
     },
     "resources": [
       {
@@ -796,8 +801,9 @@
                 },
                 "osProfile": {
                     "computerName": "VM-FW1",
-          "adminUsername": "[parameters('Username')]",
-          "adminPassword": "[parameters('Password')]"
+          			"adminUsername": "[parameters('Username')]",
+          			"adminPassword": "[parameters('Password')]",
+          			"customData": "[base64(variables('customDataField'))]"
                 },
                 "storageProfile": {
                     "imageReference": {
