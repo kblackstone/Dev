@@ -1049,7 +1049,7 @@
         },
         "dev 1 management": {
             "type": "String",
-            "value": "[reference('IP-Dev1').dnsSettings.fqdn]"
+            "value": "[reference('IP-Web1').dnsSettings.fqdn]"
         }
     }
 }
