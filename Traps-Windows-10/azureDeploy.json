@@ -27,7 +27,7 @@
         "StorageAccountAccessKey": "8qLC19F9z5hppsR1Acu1jcjf8/6rkAB+I5yTGBzu2RpiCRLfoqlnQGszEQJMaoi3mA7fSCZFwQiPwWNc0ZoSTA==",
         "StorageAccountFileShare": "bootstrapfiles",
         "StorageAccountFileShareDirectory": "",
-        "customDataField": "[concat('storage-account=', parameters('BootstrapStorageAccount'), ',access-key=', parameters('StorageAccountAccessKey'), ',file-share=', parameters('StorageAccountFileShare'),',share-directory=', parameters('StorageAccountFileShareDirectory'))]",
+        "customDataField": "[concat('storage-account=', variables('BootstrapStorageAccount'), ',access-key=', variables('StorageAccountAccessKey'), ',file-share=', variables('StorageAccountFileShare'),',share-directory=', variables('StorageAccountFileShareDirectory'))]",
     },
     "resources": [
       {
