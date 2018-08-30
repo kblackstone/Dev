@@ -405,6 +405,26 @@
                                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/probes/TCP-22')]"
                             }
                         }
+                    },
+                    {
+                        "name": "LB-Public-SSH",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/frontendIPConfigurations/Lb-Public-FrontEnd')]"
+                            },
+                            "frontendPort": 22,
+                            "backendPort": 22,
+                            "enableFloatingIP": true,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "sourceIP",
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/backendAddressPools/AS-FW')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'LB-Public'), '/probes/TCP-22')]"
+                            }
+                        }
                     }
                 ],
                 "probes": [
@@ -1026,6 +1046,10 @@
         "firewall 2 management": {
             "type": "String",
             "value": "[reference('IP-FW2-Management').dnsSettings.fqdn]"
+        },
+        "dev 1 management": {
+            "type": "String",
+            "value": "[reference('IP-Dev1').dnsSettings.fqdn]"
         }
     }
 }
