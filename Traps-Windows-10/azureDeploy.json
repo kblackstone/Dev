@@ -873,8 +873,9 @@
                 },
                 "osProfile": {
                     "computerName": "VM-FW2",
-          "adminUsername": "[parameters('Username')]",
-          "adminPassword": "[parameters('Password')]"
+          			"adminUsername": "[parameters('Username')]",
+          			"adminPassword": "[parameters('Password')]",
+                    "customData": "[base64(variables('customDataField'))]"
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -1056,6 +1057,10 @@
         "web 1 management": {
             "type": "String",
             "value": "[reference('IP-Web1').dnsSettings.fqdn]"
+        },
+        "public lb ip": {
+            "type": "String",
+            "value": "[reference('IP-PublicLB').ipAddress]"
         }
     }
 }
