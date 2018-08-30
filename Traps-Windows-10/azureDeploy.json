@@ -1047,7 +1047,7 @@
             "type": "String",
             "value": "[reference('IP-FW2-Management').dnsSettings.fqdn]"
         },
-        "dev 1 management": {
+        "web 1 management": {
             "type": "String",
             "value": "[reference('IP-Web1').dnsSettings.fqdn]"
         }
