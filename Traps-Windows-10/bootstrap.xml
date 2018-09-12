@@ -11,7 +11,7 @@
         </permissions>
       </entry>
       <entry name="paloalto">
-        <phash>$1$bxyedfnc$hSJ0OeaZO6P6K3oYxdcox.</phash>
+        <phash>$1$uqegkvfs$26y0HAWnU63sIoyVKVL4N.</phash>
         <permissions>
           <role-based>
             <superuser>yes</superuser>
@@ -513,7 +513,7 @@
           <default-gateway>10.0.0.1</default-gateway>
           <dns-setting>
             <servers>
-              <primary>168.63.129.16</primary>
+              <primary>4.2.2.2</primary>
               <secondary>8.8.8.8</secondary>
             </servers>
           </dns-setting>
@@ -541,12 +541,10 @@
                   <accept-dhcp-domain>no</accept-dhcp-domain>
                 </dhcp-client>
               </type>
-              <ip-address>10.0.0.5</ip-address>
-              <netmask>255.255.255.0</netmask>
-              <default-gateway>10.0.0.1</default-gateway>
-              <dns-primary>168.63.129.16</dns-primary>
-              <username>paloalto</username>
               <hostname>VM-FW1</hostname>
+              <username>paloalto</username>
+              <dns-primary>4.2.2.2</dns-primary>
+              <dns-secondary>8.8.8.8</dns-secondary>
             </initcfg>
           </management>
         </setting>
@@ -635,7 +633,7 @@
                     <member>any</member>
                   </source>
                   <destination>
-                    <member>20.36.254.211</member>
+                    <member>20.36.251.211</member>
                   </destination>
                   <destination-translation>
                     <translated-address>10.0.6.50</translated-address>
@@ -661,7 +659,7 @@
                     <member>any</member>
                   </source>
                   <destination>
-                    <member>20.36.254.211</member>
+                    <member>20.36.251.211</member>
                   </destination>
                   <destination-translation>
                     <translated-address>10.0.6.50</translated-address>
@@ -818,6 +816,37 @@
                   </hip-profiles>
                   <action>allow</action>
                 </entry>
+                <entry name="Outbound Traps Mgmt">
+                  <to>
+                    <member>untrust</member>
+                  </to>
+                  <from>
+                    <member>trust</member>
+                  </from>
+                  <source>
+                    <member>10.0.6.50</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>paloalto-traps</member>
+                    <member>traps-management-service</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                </entry>
                 <entry name="Outbound Access">
                   <to>
                     <member>untrust</member>
@@ -866,37 +895,6 @@
                       </wildfire-analysis>
                     </profiles>
                   </profile-setting>
-                </entry>
-                <entry name="Outbound Traps Mgmt">
-                  <to>
-                    <member>untrust</member>
-                  </to>
-                  <from>
-                    <member>trust</member>
-                  </from>
-                  <source>
-                    <member>10.0.6.50</member>
-                  </source>
-                  <destination>
-                    <member>any</member>
-                  </destination>
-                  <source-user>
-                    <member>any</member>
-                  </source-user>
-                  <category>
-                    <member>any</member>
-                  </category>
-                  <application>
-                    <member>paloalto-traps</member>
-                    <member>traps-management-service</member>
-                  </application>
-                  <service>
-                    <member>application-default</member>
-                  </service>
-                  <hip-profiles>
-                    <member>any</member>
-                  </hip-profiles>
-                  <action>allow</action>
                 </entry>
               </rules>
             </security>

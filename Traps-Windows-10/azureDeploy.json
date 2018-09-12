@@ -90,14 +90,6 @@
             "properties": {
                 "routes": [
                     {
-                        "name": "Webroute-Network",
-                        "properties": {
-                            "addressPrefix": "10.0.0.0/16",
-                            "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "10.0.3.100"
-                        }
-                    },
-                    {
                         "name": "Webroute-Local",
                         "properties": {
                             "addressPrefix": "10.0.4.0/24",
@@ -138,14 +130,6 @@
             "location": "[resourceGroup().location]",
             "properties": {
                 "routes": [
-                    {
-                        "name": "Devroute-Network",
-                        "properties": {
-                            "addressPrefix": "10.0.0.0/16",
-                            "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "10.0.3.100"
-                        }
-                    },
                     {
                         "name": "Devroute-Local",
                         "properties": {
