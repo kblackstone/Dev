@@ -1056,7 +1056,7 @@
         },
         "web 1 management": {
             "type": "String",
-            "value": "[reference('IP-Web1').dnsSettings.fqdn]"
+            "value": "[reference('IP-Web1').ipAddress]"
         },
         "public lb ip": {
             "type": "String",
